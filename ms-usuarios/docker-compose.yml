@@ -1,0 +1,49 @@
+version: '3.8'
+
+services:
+  postgres:
+    image: postgres:16-alpine
+    container_name: usuarios_postgres
+    environment:
+      POSTGRES_DB: usuarios_db
+      POSTGRES_USER: postgres
+      POSTGRES_PASSWORD: postgres
+    ports:
+      - "5432:5432"
+    volumes:
+      - postgres_data:/var/lib/postgresql/data
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U postgres" ]
+      interval: 10s
+      timeout: 5s
+      retries: 5
+    networks:
+      - worldcupticket
+
+  ms-usuarios:
+    build:
+      context: .
+      dockerfile: Dockerfile
+    container_name: ms_usuarios
+    environment:
+      SERVER_PORT: 8081
+      DB_URL: jdbc:postgresql://postgres:5432/usuarios_db
+      DB_USER: postgres
+      DB_PASS: postgres
+      JWT_SECRET: ${JWT_SECRET:-dev-secret-key-change-in-production}
+      EUREKA_URL: ${EUREKA_URL:-http://eureka:8761/eureka}
+    ports:
+      - "8081:8081"
+    depends_on:
+      postgres:
+        condition: service_healthy
+    networks:
+      - worldcupticket
+    restart: unless-stopped
+
+networks:
+  worldcupticket:
+    driver: bridge
+
+volumes:
+  postgres_data:
