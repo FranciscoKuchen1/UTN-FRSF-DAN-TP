@@ -11,20 +11,29 @@ spring:
         format_sql: true
         use_sql_comments: true
     show-sql: false
+    open-in-view: false
   
   datasource:
     url: ${DB_URL:jdbc:postgresql://localhost:5432/users_db}
     username: ${DB_USER:postgres}
-    password: ${DB_PASS:password}
+    password: ${DB_PASS:postgres}
     driver-class-name: org.postgresql.Driver
     hikari:
       maximum-pool-size: 10
       minimum-idle: 5
+      connection-timeout: 20000
+      idle-timeout: 300000
+      max-lifetime: 1200000
   
   flyway:
     enabled: true
     locations: classpath:db/migration
-    baseline-on-migrate: true
+    baseline-on-migrate: false
+    # Configure Flyway to use the 'usuarios' schema
+    schemas: usuarios
+    default-schema: usuarios
+    out-of-order: false
+    validate-on-migrate: true
 
 server:
   port: ${SERVER_PORT:8081}
@@ -40,7 +49,7 @@ management:
   endpoints:
     web:
       exposure:
-        include: health,metrics,prometheus
+        include: health,metrics,prometheus,info
   endpoint:
     health:
       show-details: always
@@ -69,5 +78,6 @@ logging:
     root: INFO
     com.worldcupticket: DEBUG
     org.springframework.security: DEBUG
+    org.springframework.web: DEBUG
   pattern:
-    console: "%d{yyyy-MM-dd HH:mm:ss} - %msg%n"
+    console: "%d{yyyy-MM-dd HH:mm:ss} [%thread] %-5level %logger{36} - %msg%n"
