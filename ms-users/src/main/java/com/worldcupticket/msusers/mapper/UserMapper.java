@@ -5,19 +5,15 @@ import com.worldcupticket.msusers.entity.User;
 import org.springframework.stereotype.Component;
 
 /**
- * Mapper for converting between User (Entity) and UserDTO.
- *
- * Performs conversions between entity and data transfer object layers.
- * Ensures sensitive information like password is not exposed in DTOs.
+ * Mapper to convert between User (Entity) and UserDTO.
+ * 
+ * Performs conversions between entity and data transfer layers
  */
 @Component
 public class UserMapper {
 
     /**
-     * Convert a User entity to UserDTO
-     *
-     * @param user the User entity
-     * @return the corresponding UserDTO (null if input is null)
+     * Converts a User entity to DTO
      */
     public UserDTO toDTO(User user) {
         if (user == null) {
@@ -29,20 +25,14 @@ public class UserMapper {
             .email(user.getEmail())
             .firstName(user.getFirstName())
             .lastName(user.getLastName())
-            .role(user.getRole())
-            .enabled(user.getEnabled())
+            .active(user.getActive())
             .createdAt(user.getCreatedAt())
             .updatedAt(user.getUpdatedAt())
             .build();
     }
 
     /**
-     * Convert a UserDTO to User entity
-     *
-     * Note: This does not set the password. Use service layer for secure password handling.
-     *
-     * @param dto the UserDTO
-     * @return the corresponding User entity (null if input is null)
+     * Converts a DTO to User entity
      */
     public User toEntity(UserDTO dto) {
         if (dto == null) {
@@ -54,10 +44,10 @@ public class UserMapper {
             .email(dto.getEmail())
             .firstName(dto.getFirstName())
             .lastName(dto.getLastName())
-            .role(dto.getRole())
-            .enabled(dto.getEnabled())
+            .active(dto.getActive())
             .createdAt(dto.getCreatedAt())
             .updatedAt(dto.getUpdatedAt())
             .build();
     }
+
 }

@@ -5,7 +5,7 @@ import org.springframework.context.annotation.Configuration;
 
 /**
  * JWT configuration properties.
- *
+ * 
  * Maps JWT properties from application.yml
  */
 @Configuration

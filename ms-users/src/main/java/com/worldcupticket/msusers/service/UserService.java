@@ -8,33 +8,33 @@ import java.util.Optional;
 
 /**
  * User service interface.
- *
- * Defines business operations for Users
+ * 
+ * Defines business logic operations for User
  */
 public interface UserService {
 
     /**
-     * Get a user by ID
+     * Gets a user by ID as DTO
      */
     Optional<UserDTO> getById(Long id);
 
     /**
-     * Get a user by email
+     * Gets a user by email as DTO
      */
     Optional<UserDTO> getByEmail(String email);
 
     /**
-     * Get all users
+     * Gets all users as DTOs
      */
     List<UserDTO> getAll();
 
     /**
-     * Get the User entity by ID
+     * Gets a user by ID as entity
      */
     Optional<User> getUserById(Long id);
 
     /**
-     * Get the User entity by email
+     * Gets a user by email as entity
      */
     Optional<User> getUserByEmail(String email);
 

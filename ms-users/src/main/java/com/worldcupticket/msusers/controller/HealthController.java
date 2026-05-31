@@ -9,9 +9,9 @@ import java.util.HashMap;
 import java.util.Map;
 
 /**
- * Application health check controller.
- *
- * Provides basic endpoints to verify service status
+ * Health controller.
+ * 
+ * Provides basic endpoints for checking service status
  */
 @RestController
 @RequestMapping("/api/v1/health")

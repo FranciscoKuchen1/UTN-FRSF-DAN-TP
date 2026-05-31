@@ -10,8 +10,8 @@ import java.time.LocalDateTime;
 
 /**
  * Role entity.
- *
- * Represents available roles in the platform (ADMIN, USER, etc.)
+ * 
+ * Represents available roles in the platform (ADMIN, BUYER, etc.)
  */
 @Entity
 @Table(name = "roles", indexes = {

@@ -8,7 +8,7 @@ import java.util.Optional;
 
 /**
  * Role repository.
- *
+ * 
  * Provides CRUD operations and custom queries for Role
  */
 @Repository

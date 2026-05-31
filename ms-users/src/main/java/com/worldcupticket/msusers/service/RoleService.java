@@ -1,30 +1,30 @@
 package com.worldcupticket.msusers.service;
 
-import com.worldcupticket.msusers.entity.Role;
+import com.worldcupticket.msusers.dto.RoleDTO;
 
 import java.util.List;
 import java.util.Optional;
 
 /**
  * Role service interface.
- *
- * Defines business operations for Roles
+ * 
+ * Defines business logic operations for Role
  */
 public interface RoleService {
 
     /**
-     * Get a role by ID
+     * Gets a role by ID
      */
-    Optional<Role> getById(Long id);
+    Optional<RoleDTO> getById(Long id);
 
     /**
-     * Get a role by name
+     * Gets a role by name
      */
-    Optional<Role> getByName(String name);
+    Optional<RoleDTO> getByName(String name);
 
     /**
-     * Get all roles
+     * Gets all roles
      */
-    List<Role> getAll();
+    List<RoleDTO> getAll();
 
 }

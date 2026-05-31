@@ -13,7 +13,7 @@ import org.springframework.security.web.SecurityFilterChain;
 
 /**
  * Spring Security configuration.
- *
+ * 
  * Defines:
  * - Password encoding
  * - JWT authentication configuration

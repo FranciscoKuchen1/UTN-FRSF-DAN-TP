@@ -14,7 +14,7 @@ import java.util.Optional;
 
 /**
  * User service implementation.
- *
+ * 
  * Contains business logic for User operations
  */
 @Service

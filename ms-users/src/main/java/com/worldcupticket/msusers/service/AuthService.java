@@ -1,28 +1,34 @@
 package com.worldcupticket.msusers.service;
 
-import com.worldcupticket.msusers.dto.AuthResponse;
-import com.worldcupticket.msusers.dto.LoginRequest;
+import com.worldcupticket.msusers.dto.AuthResponseDTO;
+import com.worldcupticket.msusers.dto.LoginRequestDTO;
+import com.worldcupticket.msusers.dto.RegisterRequestDTO;
 
 /**
  * Authentication service interface.
- *
+ * 
  * Defines authentication operations and JWT token generation
  */
 public interface AuthService {
 
     /**
-     * Authenticate a user and return a JWT token
+     * Registers a new user and returns a JWT token
      */
-    AuthResponse login(LoginRequest loginRequest);
+    AuthResponseDTO register(RegisterRequestDTO registerRequest);
 
     /**
-     * Validate a JWT token
+     * Authenticates a user and returns a JWT token
+     */
+    AuthResponseDTO login(LoginRequestDTO loginRequest);
+
+    /**
+     * Validates a JWT token
      */
     boolean validateToken(String token);
 
     /**
-     * Extract user email from JWT token
+     * Extracts the user email from a JWT token
      */
-    String getEmailFromToken(String token);
+    String extractEmailFromToken(String token);
 
 }

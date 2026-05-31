@@ -1,6 +1,7 @@
 package com.worldcupticket.msusers.service.impl;
 
-import com.worldcupticket.msusers.entity.Role;
+import com.worldcupticket.msusers.dto.RoleDTO;
+import com.worldcupticket.msusers.mapper.RoleMapper;
 import com.worldcupticket.msusers.repository.RoleRepository;
 import com.worldcupticket.msusers.service.RoleService;
 import lombok.RequiredArgsConstructor;
@@ -12,7 +13,7 @@ import java.util.Optional;
 
 /**
  * Role service implementation.
- *
+ * 
  * Contains business logic for Role operations
  */
 @Service
@@ -21,23 +22,29 @@ import java.util.Optional;
 public class RoleServiceImpl implements RoleService {
 
     private final RoleRepository roleRepository;
+    private final RoleMapper roleMapper;
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Role> getById(Long id) {
-        return roleRepository.findById(id);
+    public Optional<RoleDTO> getById(Long id) {
+        return roleRepository.findById(id)
+            .map(roleMapper::toDTO);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public Optional<Role> getByName(String name) {
-        return roleRepository.findByName(name);
+    public Optional<RoleDTO> getByName(String name) {
+        return roleRepository.findByName(name)
+            .map(roleMapper::toDTO);
     }
 
     @Override
     @Transactional(readOnly = true)
-    public List<Role> getAll() {
-        return roleRepository.findAll();
+    public List<RoleDTO> getAll() {
+        return roleRepository.findAll()
+            .stream()
+            .map(roleMapper::toDTO)
+            .toList();
     }
 
 }

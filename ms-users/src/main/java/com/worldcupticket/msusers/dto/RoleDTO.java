@@ -5,26 +5,20 @@ import lombok.Builder;
 import lombok.Data;
 import lombok.NoArgsConstructor;
 
-import java.io.Serializable;
 import java.time.LocalDateTime;
 
 /**
- * DTO (Data Transfer Object) for User.
- * 
- * Used in API responses
+ * DTO for Role.
  */
 @Data
 @Builder
 @NoArgsConstructor
 @AllArgsConstructor
-public class UserDTO implements Serializable {
-
-    private static final long serialVersionUID = 1L;
+public class RoleDTO {
 
     private Long id;
-    private String email;
-    private String firstName;
-    private String lastName;
+    private String name;
+    private String description;
     private Boolean active;
     private LocalDateTime createdAt;
     private LocalDateTime updatedAt;
