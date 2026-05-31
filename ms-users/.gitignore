@@ -1,0 +1,70 @@
+# IDE
+.idea/
+.vscode/
+*.swp
+*.swo
+*~
+.DS_Store
+
+# Maven
+target/
+*.jar
+*.war
+*.ear
+pom.xml.tag
+pom.xml.releaseBackup
+pom.xml.versionsBackup
+pom.xml.next
+release.properties
+dependency-reduced-pom.xml
+.classpath
+.project
+.settings/
+.springBeans
+*.jks
+
+# Gradle
+.gradle/
+build/
+
+# Logs
+logs/
+*.log
+log4j.log
+
+# Spring Boot
+application-local.yml
+application-*.properties
+application-*.yml
+
+# Compiled classes
+*.class
+*.ctxt
+
+# Package Files
+*.jar
+*.zip
+*.rar
+
+# Virtual environments
+venv/
+ENV/
+env/
+
+# IDEs specific
+*.iml
+out/
+.gradle
+
+# OS
+Thumbs.db
+
+# Environment files
+.env
+.env.local
+.env.*.local
+
+# Node (if using frontend tools)
+node_modules/
+npm-debug.log
+yarn-error.log
