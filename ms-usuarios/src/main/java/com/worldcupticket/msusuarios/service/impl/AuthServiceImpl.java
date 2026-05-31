@@ -7,7 +7,7 @@ import com.worldcupticket.msusuarios.dto.RegisterRequestDTO;
 import com.worldcupticket.msusuarios.entity.Usuario;
 import com.worldcupticket.msusuarios.exception.EmailAlreadyExistsException;
 import com.worldcupticket.msusuarios.repository.UsuarioRepository;
-import com.worldcupticket.msusuarios.security.JwtTokenProvider;
+import com.worldcupticket.msusuarios.security.JwtUtil;
 import com.worldcupticket.msusuarios.service.AuthService;
 import lombok.RequiredArgsConstructor;
 import lombok.extern.slf4j.Slf4j;
@@ -31,7 +31,7 @@ public class AuthServiceImpl implements AuthService {
 
     private final UsuarioRepository usuarioRepository;
     private final PasswordEncoder passwordEncoder;
-    private final JwtTokenProvider jwtTokenProvider;
+    private final JwtUtil jwtUtil;
     private final JwtConfig jwtConfig;
 
     @Override
@@ -60,7 +60,7 @@ public class AuthServiceImpl implements AuthService {
         log.info("Usuario registrado exitosamente: {} (ID: {})", usuario.getEmail(), usuarioGuardado.getId());
         
         // Generar token JWT
-        String token = generateToken(usuarioGuardado);
+        String token = jwtUtil.generateToken(usuarioGuardado);
         Long expiresIn = jwtConfig.getExpiration().getMs();
         
         // Retornar respuesta
@@ -82,21 +82,12 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public boolean validarToken(String token) {
-        // Implementación pendiente
-        return false;
+        return jwtUtil.isTokenValid(token);
     }
 
     @Override
     public String obtenerEmailDelToken(String token) {
-        // Implementación pendiente
-        return null;
-    }
-
-    /**
-     * Genera un token JWT para un usuario (placeholder)
-     */
-    private String generateToken(Usuario usuario) {
-        return "TOKEN_PLACEHOLDER";
+        return jwtUtil.extractEmail(token);
     }
 
 }
