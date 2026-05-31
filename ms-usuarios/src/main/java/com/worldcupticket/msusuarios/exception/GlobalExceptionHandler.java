@@ -8,7 +8,9 @@ import org.springframework.web.bind.annotation.RestControllerAdvice;
 import org.springframework.web.context.request.WebRequest;
 
 import java.time.LocalDateTime;
+import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 /**
@@ -19,6 +21,19 @@ import java.util.Map;
 @RestControllerAdvice
 public class GlobalExceptionHandler {
 
+    @ExceptionHandler(EmailAlreadyExistsException.class)
+    public ResponseEntity<?> handleEmailAlreadyExists(
+            EmailAlreadyExistsException ex,
+            WebRequest request) {
+        
+        Map<String, Object> body = new HashMap<>();
+        body.put("error", "EMAIL_ALREADY_EXISTS");
+        body.put("message", ex.getMessage());
+        body.put("timestamp", LocalDateTime.now());
+        
+        return new ResponseEntity<>(body, HttpStatus.CONFLICT);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidationExceptions(
             MethodArgumentNotValidException ex,
@@ -27,12 +42,16 @@ public class GlobalExceptionHandler {
         Map<String, Object> body = new HashMap<>();
         body.put("timestamp", LocalDateTime.now());
         body.put("status", HttpStatus.BAD_REQUEST.value());
+        body.put("error", "VALIDATION_FAILED");
         body.put("message", "Validation failed");
         
-        Map<String, String> errors = new HashMap<>();
-        ex.getBindingResult().getFieldErrors().forEach(error ->
-            errors.put(error.getField(), error.getDefaultMessage())
-        );
+        List<Map<String, String>> errors = new ArrayList<>();
+        ex.getBindingResult().getFieldErrors().forEach(error -> {
+            Map<String, String> errorMap = new HashMap<>();
+            errorMap.put("field", error.getField());
+            errorMap.put("message", error.getDefaultMessage());
+            errors.add(errorMap);
+        });
         body.put("errors", errors);
         
         return new ResponseEntity<>(body, HttpStatus.BAD_REQUEST);

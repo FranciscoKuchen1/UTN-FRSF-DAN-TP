@@ -2,6 +2,7 @@ package com.worldcupticket.msusuarios.service;
 
 import com.worldcupticket.msusuarios.dto.AuthResponseDTO;
 import com.worldcupticket.msusuarios.dto.LoginRequestDTO;
+import com.worldcupticket.msusuarios.dto.RegisterRequestDTO;
 
 /**
  * Interfaz del servicio de Autenticación.
@@ -9,6 +10,11 @@ import com.worldcupticket.msusuarios.dto.LoginRequestDTO;
  * Define las operaciones de autenticación y generación de tokens JWT
  */
 public interface AuthService {
+
+    /**
+     * Registra un nuevo usuario y retorna un token JWT
+     */
+    AuthResponseDTO register(RegisterRequestDTO registerRequest);
 
     /**
      * Autentica un usuario y retorna un token JWT
