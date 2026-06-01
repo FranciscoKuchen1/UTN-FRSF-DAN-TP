@@ -62,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
         log.info("User registered successfully: {} (ID: {})", user.getEmail(), savedUser.getId());
         
         // Generate JWT token
-        String token = generateToken(savedUser);
+        String token = jwtUtil.generateToken(savedUser);
         Long expiresIn = jwtConfig.getExpiration().getMs();
         
         // Return response
@@ -102,7 +102,7 @@ public class AuthServiceImpl implements AuthService {
         log.info("User authenticated successfully: {}", loginRequest.getEmail());
         
         // Generate JWT token
-        String token = generateToken(user);
+        String token = jwtUtil.generateToken(user);
         Long expiresIn = jwtConfig.getExpiration().getMs();
         
         // Return response
@@ -124,13 +124,6 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String extractEmailFromToken(String token) {
         return jwtUtil.extractEmail(token);
-    }
-
-    /**
-     * Generates a JWT token for a user (placeholder).
-     */
-    private String generateToken(User user) {
-        return "TOKEN_PLACEHOLDER";
     }
 
 }

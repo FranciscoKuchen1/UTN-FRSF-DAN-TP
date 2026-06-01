@@ -15,6 +15,7 @@ import com.worldcupticket.msusers.exception.InvalidTokenException;
 import javax.crypto.SecretKey;
 import java.util.Base64;
 import java.util.Date;
+import java.util.UUID;
 
 /**
  * JWT utility for token generation and validation.
@@ -66,6 +67,9 @@ public class JwtUtil {
 
     /**
      * Generates a JWT token for a user.
+     * 
+     * Contains claims: sub (userId), email, role, iat, exp
+     * Signed with HMAC-SHA256
      *
      * @param user the user for which to generate the token
      * @return signed JWT token
@@ -73,9 +77,12 @@ public class JwtUtil {
     public String generateToken(User user) {
         Date now = new Date();
         Date expiryDate = new Date(now.getTime() + expirationMs);
+        
+        // Use user ID as subject, or generate UUID if ID is null
+        String subject = user.getId() != null ? user.getId().toString() : UUID.randomUUID().toString();
 
         String token = Jwts.builder()
-            .subject(user.getId().toString())
+            .subject(subject)
             .claim("email", user.getEmail())
             .claim("role", "BUYER")
             .issuedAt(now)
