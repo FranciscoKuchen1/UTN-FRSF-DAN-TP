@@ -5,7 +5,9 @@ import com.worldcupticket.msusers.dto.AuthResponseDTO;
 import com.worldcupticket.msusers.dto.LoginRequestDTO;
 import com.worldcupticket.msusers.dto.RegisterRequestDTO;
 import com.worldcupticket.msusers.entity.User;
+import com.worldcupticket.msusers.exception.AccountDisabledException;
 import com.worldcupticket.msusers.exception.EmailAlreadyExistsException;
+import com.worldcupticket.msusers.exception.InvalidCredentialsException;
 import com.worldcupticket.msusers.repository.UserRepository;
 import com.worldcupticket.msusers.security.JwtUtil;
 import com.worldcupticket.msusers.service.AuthService;
@@ -60,7 +62,7 @@ public class AuthServiceImpl implements AuthService {
         log.info("User registered successfully: {} (ID: {})", user.getEmail(), savedUser.getId());
         
         // Generate JWT token
-        String token = jwtUtil.generateToken(savedUser);
+        String token = generateToken(savedUser);
         Long expiresIn = jwtConfig.getExpiration().getMs();
         
         // Return response
@@ -76,8 +78,42 @@ public class AuthServiceImpl implements AuthService {
 
     @Override
     public AuthResponseDTO login(LoginRequestDTO loginRequest) {
-        // Implementation pending
-        return null;
+        log.info("Login attempt for email: {}", loginRequest.getEmail());
+        
+        // Find user by email
+        User user = userRepository.findByEmail(loginRequest.getEmail())
+            .orElseThrow(() -> {
+                log.warn("Login attempt with non-existent email: {}", loginRequest.getEmail());
+                return new InvalidCredentialsException();
+            });
+        
+        // Verify password
+        if (!passwordEncoder.matches(loginRequest.getPassword(), user.getPassword())) {
+            log.warn("Login attempt with incorrect password for email: {}", loginRequest.getEmail());
+            throw new InvalidCredentialsException();
+        }
+        
+        // Check if user is active
+        if (!user.getActive()) {
+            log.warn("Login attempt for disabled account: {}", loginRequest.getEmail());
+            throw new AccountDisabledException();
+        }
+        
+        log.info("User authenticated successfully: {}", loginRequest.getEmail());
+        
+        // Generate JWT token
+        String token = generateToken(user);
+        Long expiresIn = jwtConfig.getExpiration().getMs();
+        
+        // Return response
+        return AuthResponseDTO.builder()
+            .token(token)
+            .userId(UUID.randomUUID())
+            .email(user.getEmail())
+            .firstName(user.getFirstName())
+            .role("BUYER")
+            .expiresIn(expiresIn)
+            .build();
     }
 
     @Override
@@ -88,6 +124,13 @@ public class AuthServiceImpl implements AuthService {
     @Override
     public String extractEmailFromToken(String token) {
         return jwtUtil.extractEmail(token);
+    }
+
+    /**
+     * Generates a JWT token for a user (placeholder).
+     */
+    private String generateToken(User user) {
+        return "TOKEN_PLACEHOLDER";
     }
 
 }

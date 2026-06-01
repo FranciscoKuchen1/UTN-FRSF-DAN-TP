@@ -1,6 +1,7 @@
 package com.worldcupticket.msusers.controller;
 
 import com.worldcupticket.msusers.dto.AuthResponseDTO;
+import com.worldcupticket.msusers.dto.LoginRequestDTO;
 import com.worldcupticket.msusers.dto.RegisterRequestDTO;
 import com.worldcupticket.msusers.service.AuthService;
 import jakarta.validation.Valid;
@@ -37,6 +38,22 @@ public class AuthController {
         AuthResponseDTO response = authService.register(registerRequest);
         
         return ResponseEntity.status(HttpStatus.CREATED).body(response);
+    }
+
+    /**
+     * Authenticates a user and returns a JWT token.
+     * 
+     * @param loginRequest login credentials
+     * @return AuthResponseDTO with JWT token and user data
+     */
+    @PostMapping("/login")
+    public ResponseEntity<AuthResponseDTO> login(
+            @Valid @RequestBody LoginRequestDTO loginRequest) {
+        
+        log.info("Login request for email: {}", loginRequest.getEmail());
+        AuthResponseDTO response = authService.login(loginRequest);
+        
+        return ResponseEntity.ok(response);
     }
 
 }

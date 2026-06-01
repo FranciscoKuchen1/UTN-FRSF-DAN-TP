@@ -34,6 +34,32 @@ public class GlobalExceptionHandler {
         return new ResponseEntity<>(body, HttpStatus.CONFLICT);
     }
 
+    @ExceptionHandler(InvalidCredentialsException.class)
+    public ResponseEntity<?> handleInvalidCredentials(
+            InvalidCredentialsException ex,
+            WebRequest request) {
+        
+        Map<String, Object> body = new HashMap<>();
+        body.put("error", "INVALID_CREDENTIALS");
+        body.put("message", ex.getMessage());
+        body.put("timestamp", LocalDateTime.now());
+        
+        return new ResponseEntity<>(body, HttpStatus.UNAUTHORIZED);
+    }
+
+    @ExceptionHandler(AccountDisabledException.class)
+    public ResponseEntity<?> handleAccountDisabled(
+            AccountDisabledException ex,
+            WebRequest request) {
+        
+        Map<String, Object> body = new HashMap<>();
+        body.put("error", "ACCOUNT_DISABLED");
+        body.put("message", ex.getMessage());
+        body.put("timestamp", LocalDateTime.now());
+        
+        return new ResponseEntity<>(body, HttpStatus.FORBIDDEN);
+    }
+
     @ExceptionHandler(MethodArgumentNotValidException.class)
     public ResponseEntity<?> handleValidationExceptions(
             MethodArgumentNotValidException ex,
