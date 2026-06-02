@@ -1,41 +1,41 @@
 package com.worldcupticket.msusers.service;
 
-import com.worldcupticket.msusers.dto.UserDTO;
-import com.worldcupticket.msusers.entity.User;
-
-import java.util.List;
-import java.util.Optional;
+import com.worldcupticket.msusers.dto.ChangePasswordRequestDTO;
+import com.worldcupticket.msusers.dto.UpdateProfileRequestDTO;
+import com.worldcupticket.msusers.dto.UserProfileDTO;
 
 /**
- * User service interface.
+ * User management service interface.
  * 
- * Defines business logic operations for User
+ * Defines operations for user profile management.
  */
 public interface UserService {
 
     /**
-     * Gets a user by ID as DTO
+     * Gets the current user's profile.
+     * 
+     * @return user profile DTO
      */
-    Optional<UserDTO> getById(Long id);
+    UserProfileDTO getProfile();
 
     /**
-     * Gets a user by email as DTO
+     * Updates the current user's profile.
+     * 
+     * Only non-null fields in the request are updated (PATCH semantics).
+     * Email and role cannot be changed through this endpoint.
+     *
+     * @param updateRequest profile update data
+     * @return updated user profile DTO
      */
-    Optional<UserDTO> getByEmail(String email);
+    UserProfileDTO updateProfile(UpdateProfileRequestDTO updateRequest);
 
     /**
-     * Gets all users as DTOs
+     * Changes the current user's password.
+     * 
+     * Validates current password and confirms new password match.
+     *
+     * @param changePasswordRequest password change data
      */
-    List<UserDTO> getAll();
-
-    /**
-     * Gets a user by ID as entity
-     */
-    Optional<User> getUserById(Long id);
-
-    /**
-     * Gets a user by email as entity
-     */
-    Optional<User> getUserByEmail(String email);
+    void changePassword(ChangePasswordRequestDTO changePasswordRequest);
 
 }
